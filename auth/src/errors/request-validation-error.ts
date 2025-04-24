@@ -7,9 +7,10 @@ import {
 } from "express-validator";
 
 import {CustomError} from "./custom-error";
+import {STATUS_BAD_REQUEST} from "../constants/data";
 
 export class RequestValidationError extends CustomError {
-    statusCode = 400
+    statusCode = STATUS_BAD_REQUEST
     constructor(public errors: (AlternativeValidationError | GroupedAlternativeValidationError | UnknownFieldsError | FieldValidationError  )[]) {
         super("Invalid request parameters");
         // Only because we are extending a build in class

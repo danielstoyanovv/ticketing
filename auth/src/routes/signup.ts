@@ -9,6 +9,7 @@ import {
     STATUS_CREATED,
 } from "../constants/data"
 import {UserService} from "../services/UserService";
+import {BadRequestError} from "../errors/bad-request-error";
 
 const router = express.Router()
 
@@ -29,6 +30,12 @@ router.post("/api/users/signup", [
     const { email } = req.body
     const password = await bcrypt.hash(req.body.password, 10);
     const service = new UserService()
+
+    const exists = await service
+        .setEmail(email)
+        .userExists()
+    if (exists) throw new BadRequestError("Email in use")
+
     await service
         .setEmail(email)
         .setPassword(password)

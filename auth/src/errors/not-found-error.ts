@@ -1,9 +1,10 @@
 "use strict";
 
 import {CustomError} from "./custom-error";
+import {STATUS_NOT_FOUND} from "../constants/data";
 
 export class NotFoundError extends CustomError {
-    statusCode = 404;
+    statusCode = STATUS_NOT_FOUND;
     constructor() {
         super("Route not found");
         Object.setPrototypeOf(this, NotFoundError.prototype)

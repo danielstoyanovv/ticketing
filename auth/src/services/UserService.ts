@@ -54,4 +54,14 @@ export class UserService {
             this.getPassword()
         )
     }
+
+    /**
+     * Check if user with specified email exists
+     * @return {boolean}
+     */
+    async userExists() {
+        const user = await repository
+            .findByField(this.getEmail())
+        return !!user
+    }
 }
