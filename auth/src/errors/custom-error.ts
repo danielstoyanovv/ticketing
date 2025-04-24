@@ -1,3 +1,5 @@
+"use strict";
+
 export abstract class CustomError extends Error {
     abstract statusCode: number
     constructor(message: string) {

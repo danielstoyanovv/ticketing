@@ -6,8 +6,9 @@ import {
     NextFunction
 } from "express";
 import {CustomError} from "../errors/custom-error";
-
-const STATUS_BAD_REQUEST = 400
+import {
+    STATUS_BAD_REQUEST
+} from "../constants/data";
 
 export const errorHandlerMiddleware = (
     err: Error,

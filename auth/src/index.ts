@@ -10,6 +10,7 @@ import {signinRouter} from "./routes/signin";
 import {signupRouter} from "./routes/signup";
 import {signoutRouter} from "./routes/signout";
 import {errorHandlerMiddleware} from "./middlewares/error-handlerMiddleware";
+import {MongoDbConnect} from "./config/MongoDbConnect";
 
 const port = process.env.AUTH_PORT || 3000
 
@@ -27,6 +28,7 @@ app.use(signupRouter)
 app.use(signoutRouter)
 app.use(errorHandlerMiddleware)
 
+const database = new MongoDbConnect()
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
 })

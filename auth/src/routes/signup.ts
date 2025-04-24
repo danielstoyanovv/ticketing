@@ -4,6 +4,12 @@ import express, {Request, Response} from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error";
 import { DatabaseConnectionError } from "../errors/database-connection-error";
+const bcrypt = require("bcrypt")
+import {
+    MESSEGE_SUCCESS,
+    STATUS_CREATED,
+} from "../constants/data"
+import {UserService} from "../services/UserService";
 
 const router = express.Router()
 
@@ -19,14 +25,21 @@ router.post("/api/users/signup", [
 ], async (req: Request, res: Response) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-         throw new RequestValidationError(errors.array())
+        throw new RequestValidationError(errors.array())
     }
-    const { email, password } = req.body
+    const { email } = req.body
+    const password = await bcrypt.hash(req.body.password, 10);
+    const service = new UserService()
+    await service
+        .setEmail(email)
+        .setPassword(password)
+        .createUser()
+    res.status(STATUS_CREATED).json({
+        status: MESSEGE_SUCCESS,
+        data: [],
+        message: "Successfully registration"
+    })
 
-    console.log("Creating a user")
-    throw new DatabaseConnectionError()
-
-    res.send({})
 })
 
 export { router as signupRouter }
