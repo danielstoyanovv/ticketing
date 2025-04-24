@@ -3,6 +3,10 @@
 const mongoose = require('mongoose')
 const {config} = require("dotenv")
 config()
+import {LoggerService} from "../services/LoggerService";
+
+const logger = new LoggerService()
+    .createLogger()
 
 export class MongoDbConnect {
     constructor() {
@@ -14,7 +18,7 @@ export class MongoDbConnect {
                 console.log('MongoDb connection established!')
             })
             .catch((error: object) => {
-                console.log(error)
+                logger.error(error)
             })
     }
 }
