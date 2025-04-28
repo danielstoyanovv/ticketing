@@ -3,13 +3,14 @@
 import express, {Request, Response} from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../errors/request-validation-error";
-const bcrypt = require("bcrypt")
+
 import {
     MESSEGE_SUCCESS,
     STATUS_CREATED,
 } from "../constants/data"
 import {UserService} from "../services/UserService";
 import {BadRequestError} from "../errors/bad-request-error";
+import {Password} from "../services/password";
 
 const router = express.Router()
 
@@ -28,9 +29,9 @@ router.post("/api/users/signup", [
         throw new RequestValidationError(errors.array())
     }
     const { email } = req.body
-    const password = await bcrypt.hash(req.body.password, 10);
+    const password = await Password
+        .toHash(req.body.password)
     const service = new UserService()
-
     const exists = await service
         .setEmail(email)
         .userExists()
