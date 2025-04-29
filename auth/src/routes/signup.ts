@@ -8,9 +8,10 @@ import {
     MESSEGE_SUCCESS,
     STATUS_CREATED,
 } from "../constants/data"
-import {UserService} from "../services/UserService";
-import {BadRequestError} from "../errors/bad-request-error";
-import {Password} from "../services/password";
+import { UserService } from "../services/UserService";
+import { BadRequestError } from "../errors/bad-request-error";
+import { Password } from "../services/password";
+import { Token } from "../services/token";
 
 const router = express.Router()
 
@@ -25,25 +26,37 @@ router.post("/api/users/signup", [
 
 ], async (req: Request, res: Response) => {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        throw new RequestValidationError(errors.array())
-    }
+    if (!errors.isEmpty()) throw new RequestValidationError(errors.array())
+
     const { email } = req.body
+
     const password = await Password
         .toHash(req.body.password)
+
     const service = new UserService()
     const exists = await service
         .setEmail(email)
         .userExists()
     if (exists) throw new BadRequestError("Email in use")
 
-    await service
+    const user = await service
         .setEmail(email)
         .setPassword(password)
         .createUser()
+
+    const token = new Token()
+    const userToken = token
+        .setId(user.id)
+        .setEmail(email)
+        .generateToken()
+
+    const data = {
+        token: userToken,
+        logged_user_id: user.id
+    }
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
-        data: [],
+        data,
         message: "Successfully registration"
     })
 
