@@ -10,7 +10,7 @@ import {
     STATUS_BAD_REQUEST
 } from "../constants/data";
 
-export const errorHandlerMiddleware = (
+export const errorHandler = (
     err: Error,
     req: Request,
     res: Response,
