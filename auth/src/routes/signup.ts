@@ -10,7 +10,6 @@ import {
 import { UserService } from "../services/UserService";
 import { BadRequestError } from "../errors/bad-request-error";
 import { Password } from "../services/password";
-import { Token } from "../services/token";
 import { validateRequest } from "../middlewares/validate-request";
 
 const router = express.Router()
@@ -38,24 +37,14 @@ router.post("/api/users/signup", [
         .userExists()
     if (exists) throw new BadRequestError("Email in use")
 
-    const user = await service
+    await service
         .setEmail(email)
         .setPassword(password)
         .createUser()
 
-    const token = new Token()
-    const userToken = token
-        .setId(user.id)
-        .setEmail(email)
-        .generateToken()
-
-    const data = {
-        token: userToken,
-        logged_user_id: user.id
-    }
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
-        data,
+        data: "",
         message: "Successfully registration"
     })
 

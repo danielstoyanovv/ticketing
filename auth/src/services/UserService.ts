@@ -57,11 +57,11 @@ export class UserService {
 
     /**
      * Check if user with specified email exists
-     * @return {boolean}
+     * @return {object}
      */
     async userExists() {
-        const user = await repository
+        return await repository
             .findByField(this.getEmail())
-        return !!user
+
     }
 }
