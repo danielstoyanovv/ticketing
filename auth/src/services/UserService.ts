@@ -56,7 +56,7 @@ export class UserService {
     }
 
     /**
-     * Check if user with specified email exists
+     * Get user
      * @return {object}
      */
     async userExists() {
