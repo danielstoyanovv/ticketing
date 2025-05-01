@@ -39,10 +39,10 @@ export class TokenManager {
     }
 
     /**
-     * Check if authentication token data includes admin
-     * @return {boolean}
+     * Get token data
+     * @return {object}
      */
-    async tokenData() {
+    async extractData() {
         return jwt.verify(this.getToken(), process.env.JWT_SECRET!, {});
     }
 }

@@ -7,7 +7,7 @@ import { UserService } from "../services/UserService";
 import {BadRequestError} from "../errors/bad-request-error";
 import {Password} from "../services/password";
 import { Token } from "../services/token";
-import {NotFoundError} from "../errors/not-found-error";
+import {NotFoundRequestError} from "../errors/not-found-request-error";
 import {MESSEGE_SUCCESS, STATUS_OK} from "../constants/data";
 
 const router = express.Router()
@@ -28,7 +28,7 @@ router.post("/api/users/signin", [
     const existsUser = await service
         .setEmail(email)
         .userExists()
-    if (!existsUser) throw new NotFoundError("This user didn't exists")
+    if (!existsUser) throw new NotFoundRequestError("This user didn't exists")
 
     const passwordsMatch =  await Password.compare(
         existsUser.password,
