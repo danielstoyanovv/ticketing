@@ -16,10 +16,7 @@ app.set("trust proxy", false)
 app.use(
     cookieSession({
         signed: false,
-
-        // SET TRUE WHEN HTTPS IS AVAILABLE
-        // secure: true
-        secure: false
+        secure: process.env.NODE_ENV !== "test"
     })
 )
 
