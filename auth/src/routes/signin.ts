@@ -43,9 +43,14 @@ router.post("/api/users/signin", [
         .generateToken()
 
     const data = {
-        token: userToken,
         logged_user_id: existsUser.id
     }
+
+    req.session = {
+        jwt: userToken
+    };
+
+
     res.status(STATUS_OK).json({
         status: MESSEGE_SUCCESS,
         data,

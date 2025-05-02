@@ -9,7 +9,19 @@ import {currentUserRouter} from "./routes/current-user";
 import {signinRouter} from "./routes/signin";
 import {signupRouter} from "./routes/signup";
 import {errorHandler} from "./middlewares/error-handler";
+import cookieSession from "cookie-session";
 export const app = express()
+
+app.set("trust proxy", false)
+app.use(
+    cookieSession({
+        signed: false,
+
+        // SET TRUE WHEN HTTPS IS AVAILABLE
+        // secure: true
+        secure: false
+    })
+)
 
 app.use(express.json())
 
