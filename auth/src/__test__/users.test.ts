@@ -1,14 +1,9 @@
 import request from "supertest"
 import {app} from "../app";
 
+
 it("return a 201 on successful signup", async () => {
-    return request(app)
-        .post("/api/users/signup")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(201)
+    return await signup()
 })
 it("return a 400 with an invalid email", async () => {
     return request(app)
@@ -48,13 +43,7 @@ it("return a 400 with missing password", async () => {
         .expect(400)
 })
 it("disallow duplicated email", async () => {
-    await request(app)
-        .post("/api/users/signup")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(201)
+    await signup()
     await request(app)
         .post("/api/users/signup")
         .send({
@@ -65,21 +54,11 @@ it("disallow duplicated email", async () => {
 })
 
 it("sets a cookie after successful sign in", async () => {
-    await request(app)
-        .post("/api/users/signup")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(201)
-    const response = await request(app)
-        .post("/api/users/signin")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(200)
-    expect(response.get("Set-Cookie")).toBeDefined()
+    const cookie = await signin()
+    if (!cookie) {
+        throw new Error("Cookie not set after signin");
+    }
+    expect(cookie).toBeDefined()
 })
 
 it("fails when a email that does not exists is used", async () => {
@@ -93,13 +72,7 @@ it("fails when a email that does not exists is used", async () => {
 })
 
 it("fails when an incorrect password is used", async () => {
-    await request(app)
-        .post("/api/users/signup")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(201)
+    await signup()
     await request(app)
         .post("/api/users/signin")
         .send({
@@ -110,19 +83,23 @@ it("fails when an incorrect password is used", async () => {
 })
 
 it("response with a cookie when given a valid credentials", async () => {
-    await request(app)
-        .post("/api/users/signup")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
-        .expect(201)
+    const cookie = await signin()
+    if (!cookie) {
+        throw new Error("Cookie not set after signin");
+    }
+    expect(cookie).toBeDefined()
+
+})
+
+it("response with details about the current user", async () => {
+    const cookie = await signin()
+    if (!cookie) {
+        throw new Error("Cookie not set after signin");
+    }
     const response = await request(app)
-        .post("/api/users/signin")
-        .send({
-            email: "test@test.com",
-            password: "password"
-        })
+        .get("/api/users/current-user")
+        .set("Cookie", cookie)
+        .send()
         .expect(200)
-    expect(response.get("Set-Cookie")).toBeDefined()
+    expect(response.body.data.email).toEqual("test@test.com");
 })
