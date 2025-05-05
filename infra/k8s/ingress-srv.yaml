@@ -17,4 +17,11 @@ spec:
                         service:
                             name: auth-clusterip-srv
                             port:
+                                number: 4000
+                  - path: /?(.*)
+                    pathType: ImplementationSpecific
+                    backend:
+                        service:
+                            name: client-clusterip-srv
+                            port:
                                 number: 3000

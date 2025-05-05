@@ -4,7 +4,7 @@ require('dotenv').config()
 import {MongoDbConnect} from "./config/MongoDbConnect";
 import {app} from "./app"
 
-const port = process.env.AUTH_PORT || 3000
+const port = process.env.AUTH_PORT || 4000
 
 const database = new MongoDbConnect()
 app.listen(port, () => {
