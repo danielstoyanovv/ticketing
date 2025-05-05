@@ -1,6 +1,5 @@
 "use strict";
 
-import "express-async-errors"
 require('dotenv').config()
 import {MongoDbConnect} from "./config/MongoDbConnect";
 import {app} from "./app"
