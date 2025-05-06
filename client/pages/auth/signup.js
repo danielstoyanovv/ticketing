@@ -13,6 +13,8 @@ const Signup = () => {
                 email,
                 password
             })
+            if (response.status === 201) setErrorsMessages([])
+
         } catch (err) {
             setErrorsMessages(err.response.data.errors)
         }
@@ -39,13 +41,16 @@ const Signup = () => {
                     className="form-control"
                 />
             </div>
-            <div className="alert alert-danger">
-                <ul className="my-0">
-                    {errorsMessages.map(err => (
-                        <li key={err.message}>{err.message}</li>
-                    ))}
-                </ul>
-            </div>
+            {errorsMessages.length > 0 && (
+                <div className="alert alert-danger">
+                    <h4>Ooops....</h4>
+                    <ul className="my-0">
+                        {errorsMessages.map(err => (
+                            <li key={err.message}>{err.message}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
             <button className="btn btn-primary">Sign Up</button>
         </form>
     )
