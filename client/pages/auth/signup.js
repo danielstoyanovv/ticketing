@@ -1,7 +1,9 @@
 import { useState } from "react"
 import useRequest from "../../hooks/use-request";
+import { useRouter } from 'next/navigation'
 
-const Signup = () => {
+export default function Signup () {
+    const router = useRouter()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { doRequest, errors } = useRequest(
@@ -14,7 +16,8 @@ const Signup = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault()
-        await doRequest()
+        const response = await doRequest()
+        if (response && response.message === "Successfully registration") router.push("/")
     }
     return (
         <form onSubmit={onSubmit}>
@@ -22,7 +25,7 @@ const Signup = () => {
             <div className="form-group">
                 <label>Email Address</label>
                 <input
-                    required="true"
+                    required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="form-control"
@@ -31,7 +34,7 @@ const Signup = () => {
             <div className="form-group">
                 <label>Password</label>
                 <input
-                    required="true"
+                    required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     type="password"
@@ -44,4 +47,3 @@ const Signup = () => {
     )
 };
 
-export default Signup
