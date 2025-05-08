@@ -1,5 +1,5 @@
 import {UserService} from "../../services/UserService";
-import {BadRequestError} from "../../errors/bad-request-error";
+import {BadRequestError} from "@dmstickets/common";
 import {Password} from "../../services/password";
 it("verify user email and password are correct", async () => {
     const email = "test@test.com";
