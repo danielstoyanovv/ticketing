@@ -1,6 +1,6 @@
 "use strict";
 
-import {CustomError} from "./custom-error";
+import {CustomError} from "@dmstickets/common";
 import {STATUS_BAD_REQUEST} from "../constants/data";
 
 export class BadRequestError extends CustomError {

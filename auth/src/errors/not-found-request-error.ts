@@ -1,6 +1,6 @@
 "use strict";
 
-import {CustomError} from "./custom-error";
+import {CustomError} from "@dmstickets/common";
 import {STATUS_NOT_FOUND} from "../constants/data";
 
 export class NotFoundRequestError extends CustomError {

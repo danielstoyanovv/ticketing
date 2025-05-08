@@ -8,7 +8,7 @@ import cors from "cors"
 import {currentUserRouter} from "./routes/current-user";
 import {signinRouter} from "./routes/signin";
 import {signupRouter} from "./routes/signup";
-import {errorHandler} from "./middlewares/error-handler";
+import {errorHandler} from "@dmstickets/common";
 import cookieSession from "cookie-session";
 export const app = express()
 

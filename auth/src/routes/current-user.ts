@@ -1,8 +1,8 @@
 "use strict";
 
 import express, {Request, Response} from "express";
-import {auth} from "../middlewares/auth";
-import {currentUser} from "../middlewares/current-user";
+import {auth} from "@dmstickets/common";
+import {currentUser} from "@dmstickets/common";
 
 const router = express.Router()
 router.get("/api/users/current-user", [

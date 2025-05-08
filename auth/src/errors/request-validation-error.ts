@@ -6,7 +6,7 @@ import {
     UnknownFieldsError,
 } from "express-validator";
 
-import {CustomError} from "./custom-error";
+import {CustomError} from "@dmstickets/common";
 import {STATUS_BAD_REQUEST} from "../constants/data";
 
 export class RequestValidationError extends CustomError {

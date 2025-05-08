@@ -1,6 +1,6 @@
 "use strict";
 
-import {CustomError} from "./custom-error";
+import {CustomError} from "@dmstickets/common";
 import {STATUS_FORBIDDEN} from "../constants/data";
 
 export class ForbiddenRequestError extends CustomError {

@@ -10,7 +10,7 @@ import {
 import { UserService } from "../services/UserService";
 import { BadRequestError } from "../errors/bad-request-error";
 import { Password } from "../services/password";
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest } from "@dmstickets/common";
 
 const router = express.Router()
 
