@@ -2,12 +2,10 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import { validateRequest } from "@dmstickets/common";
+import { validateRequest,  BadRequestError, NotFoundRequestError} from "@dmstickets/common";
 import { UserService } from "../services/UserService";
-import {BadRequestError} from "../errors/bad-request-error";
 import {Password} from "../services/password";
 import { Token } from "../services/token";
-import {NotFoundRequestError} from "../errors/not-found-request-error";
 import {MESSEGE_SUCCESS, STATUS_OK} from "../constants/data";
 
 const router = express.Router()

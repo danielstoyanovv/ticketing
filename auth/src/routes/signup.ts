@@ -2,15 +2,13 @@
 
 import express, {Request, Response} from "express";
 import { body } from "express-validator";
-
 import {
     MESSEGE_SUCCESS,
     STATUS_CREATED,
 } from "../constants/data"
 import { UserService } from "../services/UserService";
-import { BadRequestError } from "../errors/bad-request-error";
 import { Password } from "../services/password";
-import { validateRequest } from "@dmstickets/common";
+import { validateRequest, BadRequestError } from "@dmstickets/common";
 
 const router = express.Router()
 

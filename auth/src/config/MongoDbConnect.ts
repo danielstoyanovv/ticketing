@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const {config} = require("dotenv")
 config()
 import {LoggerService} from "../services/LoggerService";
-import {DatabaseConnectionError} from "../errors/database-connection-error";
+import {DatabaseConnectionError} from "@dmstickets/common";
 
 const logger = new LoggerService()
     .createLogger()
