@@ -16,3 +16,11 @@ build:
               manual:
                   src: "src/**/*.ts"
                   dest: .
+        - image: stoyanov1234/ticketing-tickets
+          context: auth
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  src: "src/**/*.ts"
+                  dest: .
