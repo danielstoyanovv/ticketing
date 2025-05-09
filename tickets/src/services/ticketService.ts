@@ -7,6 +7,8 @@ const repository = new TicketRepository()
 export class TicketService {
     #title: string = ""
     #price: number = 0
+    #id: string = ""
+    #limit: object = Object()
 
     /**
      * get Title
@@ -45,11 +47,64 @@ export class TicketService {
     }
 
     /**
+     * Set is
+     * @param {string} id
+     * @return {this}
+     */
+    setId(id: string) {
+        this.#id = id
+        return this
+    }
+
+    /**
+     * Get id
+     * @return {string}
+     */
+    getId() {
+        return this.#id
+    }
+
+    /**
+     * Set limit
+     * @param {object} limit
+     * @return {this}
+     */
+    setLimit(limit: object) {
+        this.#limit = limit
+        return this
+    }
+
+    /**
+     * Get limit
+     * @return {object}
+     */
+    getLimit() {
+        return this.#limit
+    }
+
+    /**
      * Create ticket
      * @return {object}
      */
     async createTicket() {
         return await repository
             .create(this.getTitle(), this.getPrice())
+    }
+
+    /**
+     * Get ticket
+     * @return {object}
+     */
+    async getTicket() {
+        return await repository.findById(this.getId())
+    }
+
+    /**
+     * Get users
+     * @return {object}
+     */
+    async getTickets() {
+        return await repository
+            .findAll(this.getLimit())
     }
 }

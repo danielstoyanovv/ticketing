@@ -8,6 +8,8 @@ import cors from "cors"
 import {errorHandler} from "@dmstickets/common";
 import cookieSession from "cookie-session";
 import {createTicketRouter} from "./routes/tickets/create";
+import {oneTicketRouter} from "./routes/tickets/one";
+import {allTicketsRouter} from "./routes/tickets/all";
 
 export const app = express()
 
@@ -26,5 +28,7 @@ app.use(helmet())
 app.use(cors())
 
 app.use(createTicketRouter)
+app.use(oneTicketRouter)
+app.use(allTicketsRouter)
 app.use(errorHandler)
 export default { app }
