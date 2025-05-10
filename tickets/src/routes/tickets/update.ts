@@ -2,7 +2,7 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import { validateRequest} from "@dmstickets/common";
+import { validateRequest, auth} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
 import {MESSEGE_SUCCESS, STATUS_PATCH} from "../../constants/data";
 import {Redis} from "../../services/redis";
@@ -21,7 +21,8 @@ router.patch("/api/tickets/:id", [
         .notEmpty()
         .isNumeric()
         .withMessage("Price must be numeric value"),
-    validateRequest
+    validateRequest,
+    auth
 ], async (req: Request, res: Response) => {
     const { id } = req.params
     const {title, price} = req.body

@@ -6,7 +6,7 @@ it("return an error if an invalid title is provided", async () => {
         .send({
             price: 111
         })
-        .expect(400)
+        .expect(401)
 })
 it("return an error if an invalid price is provided", async () => {
     const response = await request(app)
@@ -14,17 +14,17 @@ it("return an error if an invalid price is provided", async () => {
         .send({
             title: "Test ticket"
         })
-        .expect(400)
+        .expect(401)
 })
 
-it("create a ticket with valid inputs", async () => {
+it("return error because user is not logged in when create a ticket with valid inputs ", async () => {
     const response = await request(app)
         .post("/api/tickets")
         .send({
             price: 111,
             title: "Test ticket"
         })
-        .expect(201)
+        .expect(401)
 })
 
 

@@ -6,6 +6,7 @@ import {
 } from "../../constants/data";
 import {Redis} from "../../services/redis";
 import {TicketService} from "../../services/ticketService";
+import {auth} from "@dmstickets/common";
 
 const service = new TicketService()
 const redisClient = new Redis().createClient()
@@ -13,6 +14,7 @@ const redisClient = new Redis().createClient()
 const router = express.Router()
 
 router.delete("/api/tickets/:id", [
+    auth
 ], async (req: Request, res: Response) => {
     const { id } = req.params
     await service

@@ -2,7 +2,7 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import { validateRequest} from "@dmstickets/common";
+import { validateRequest, auth} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
 
 import {MESSEGE_SUCCESS, STATUS_CREATED} from "../../constants/data";
@@ -19,7 +19,8 @@ router.post("/api/tickets", [
         .notEmpty()
         .isNumeric()
         .withMessage("Price must be numeric value"),
-    validateRequest
+    auth,
+    validateRequest,
 ], async (req: Request, res: Response) => {
     const {title, price} = req.body
     const service = new TicketService()
