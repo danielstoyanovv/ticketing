@@ -107,4 +107,21 @@ export class TicketService {
         return await repository
             .findAll(this.getLimit())
     }
+
+    /**
+     * Update ticket
+     * @return {object}
+     */
+    async updateTicket() {
+        return await repository
+            .update(this.getId(), this.getTitle(), this.getPrice())
+    }
+
+    /**
+     * Delete ticket
+     * @return {void}
+     */
+    async deleteTicket() {
+        await repository.delete(this.getId())
+    }
 }

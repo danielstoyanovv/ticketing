@@ -10,6 +10,8 @@ import cookieSession from "cookie-session";
 import {createTicketRouter} from "./routes/tickets/create";
 import {oneTicketRouter} from "./routes/tickets/one";
 import {allTicketsRouter} from "./routes/tickets/all";
+import {patchTicketRouter} from "./routes/tickets/update";
+import {deleteTicketRouter} from "./routes/tickets/delete";
 
 export const app = express()
 
@@ -30,5 +32,7 @@ app.use(cors())
 app.use(createTicketRouter)
 app.use(oneTicketRouter)
 app.use(allTicketsRouter)
+app.use(patchTicketRouter)
+app.use(deleteTicketRouter)
 app.use(errorHandler)
 export default { app }

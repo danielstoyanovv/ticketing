@@ -38,4 +38,31 @@ export class TicketRepository {
             .limit(limit)
             .lean()
     }
+
+
+    /**
+     * update ticket
+     * @param id
+     * @param title
+     * @param price
+     * @return {object}
+     */
+    async update(id: string, title: string, price: number) {
+        await Ticket.findOneAndUpdate({_id: id}, {
+            title,
+            price,
+        })
+        return await Ticket
+            .findById(id)
+            .exec()
+    }
+
+    /**
+     * Delete ticket
+     * @param id
+     * @return {void}
+     */
+    async delete(id: string) {
+        await Ticket.findOneAndDelete({_id: id})
+    }
 }
