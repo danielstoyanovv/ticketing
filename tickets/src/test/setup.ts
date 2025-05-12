@@ -4,9 +4,10 @@ import { MongoMemoryServer} from "mongodb-memory-server";
 const mongoose = require('mongoose');
 import {app} from "../app";
 import request from "supertest";
+import {Token} from "../services/token";
 
 declare global {
-    var signin: () => Promise<string[]>;
+    var signin: () => string[]
     var signup: () => Promise<string>;
 }
 let mongo:any
@@ -45,30 +46,17 @@ global.signup = async () => {
 };
 
 
-global.signin = async () => {
+global.signin = () => {
     const email = "test@test.com";
-    const password = "password";
+    const id = new mongoose.Types.ObjectId().toHexString()
 
-    await request(app)
-        .post("/api/users/signup")
-        .send({
-            email,
-            password,
-        })
-        .expect(201);
-
-    const response = await request(app)
-        .post("/api/users/signin")
-        .send({
-            email,
-            password,
-        })
-        .expect(200);
-
-    const cookie = response.get("Set-Cookie");
-
-    if (!cookie) {
-        throw new Error("Failed to get cookie from response");
-    }
-    return cookie;
+    const token = (new Token()
+        .setId(id)
+        .setEmail(email)
+        .generateToken())
+    const session = {jwt: token}
+    const sessionJson = JSON.stringify(session)
+    const base64 = Buffer.from(sessionJson).toString("base64")
+    // return [`session=${token}`];
+    return [`session=${base64}`];
 };

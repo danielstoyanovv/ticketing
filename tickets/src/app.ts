@@ -8,7 +8,7 @@ import cors from "cors"
 import {errorHandler} from "@dmstickets/common";
 import cookieSession from "cookie-session";
 import {createTicketRouter} from "./routes/tickets/create";
-import {oneTicketRouter} from "./routes/tickets/one";
+import {showTicketRouter} from "./routes/tickets/show";
 import {allTicketsRouter} from "./routes/tickets/all";
 import {patchTicketRouter} from "./routes/tickets/update";
 import {deleteTicketRouter} from "./routes/tickets/delete";
@@ -30,7 +30,7 @@ app.use(helmet())
 app.use(cors())
 
 app.use(createTicketRouter)
-app.use(oneTicketRouter)
+app.use(showTicketRouter)
 app.use(allTicketsRouter)
 app.use(patchTicketRouter)
 app.use(deleteTicketRouter)

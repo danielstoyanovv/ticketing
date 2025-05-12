@@ -20,7 +20,7 @@ router.delete("/api/tickets/:id", [
     await service
         .setId(id)
         .deleteTicket()
-    // refresh cached data
+    // invalidate cache
     await redisClient.del("tickets")
     const cacheKey = "ticket_" + id
     await redisClient.del(cacheKey)

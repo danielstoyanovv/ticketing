@@ -2,10 +2,12 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import { validateRequest, auth} from "@dmstickets/common";
+import { validateRequest} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
-
 import {MESSEGE_SUCCESS, STATUS_CREATED} from "../../constants/data";
+import {Redis} from "../../services/redis";
+
+const redisClient = new Redis().createClient()
 
 const router = express.Router()
 router.post("/api/tickets", [
@@ -17,21 +19,23 @@ router.post("/api/tickets", [
     body("price")
         .trim()
         .notEmpty()
-        .isNumeric()
-        .withMessage("Price must be numeric value"),
-    auth,
+        .isFloat({ gt: 0 })
+        .withMessage("Price must be float value greater than 0"),
     validateRequest,
 ], async (req: Request, res: Response) => {
     const {title, price} = req.body
     const service = new TicketService()
-    await service
+    const ticket = await service
         .setTitle(title)
         .setPrice(price)
         .createTicket()
+    // invalidate cache
+    await redisClient.del("tickets")
+    const resourcesURI =  `/api/tickets/${ticket.id}`
 
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
-        data: [],
+        data: resourcesURI,
         message: ""
     })
 })

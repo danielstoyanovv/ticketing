@@ -2,7 +2,7 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import { validateRequest, auth} from "@dmstickets/common";
+import {validateRequest, auth, NotFoundRequestError} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
 import {MESSEGE_SUCCESS, STATUS_PATCH} from "../../constants/data";
 import {Redis} from "../../services/redis";
@@ -19,8 +19,8 @@ router.patch("/api/tickets/:id", [
     body("price")
         .trim()
         .notEmpty()
-        .isNumeric()
-        .withMessage("Price must be numeric value"),
+        .isFloat({ gt: 0 })
+        .withMessage("Price must be float value greater than 0"),
     validateRequest,
     auth
 ], async (req: Request, res: Response) => {
@@ -28,12 +28,18 @@ router.patch("/api/tickets/:id", [
     const {title, price} = req.body
 
     const service = new TicketService()
+
+    const ticketExists = await service
+        .setId(id)
+        .getTicket()
+    if (!ticketExists) throw new NotFoundRequestError("Ticked didn't exists!")
+
     const ticket =  await service
         .setId(id)
         .setTitle(title)
         .setPrice(price)
         .updateTicket()
-    // refresh tickets cache
+    // invalidate cache
     await redisClient.del("tickets")
     const cacheKey = "ticket_" + id
     await redisClient.del(cacheKey)
