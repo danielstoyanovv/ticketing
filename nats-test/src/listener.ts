@@ -1,3 +1,5 @@
+"use strict";
+
 import nats, { Message, Stan } from "node-nats-streaming"
 import {randomBytes} from "node:crypto";
 import {TicketCreatedListener} from "./events/ticket-created-listener";
