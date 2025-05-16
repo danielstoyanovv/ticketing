@@ -1,10 +1,11 @@
 "use strict";
 
 import { Message, Stan } from "node-nats-streaming"
+import {Event} from "./event";
 
-export abstract class BaseListener {
-    abstract onMessage(data: any, msg: Message): void
-    abstract subject: string
+export abstract class BaseListener<T extends Event> {
+    abstract onMessage(data: T["data"], msg: Message): void
+    abstract subject: T['subject']
     abstract queueGroupName: string
     private client: Stan
     protected ackWait = 5 * 1000
