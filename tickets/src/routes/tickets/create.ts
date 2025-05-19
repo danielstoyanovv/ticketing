@@ -6,6 +6,8 @@ import { validateRequest} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
 import {MESSEGE_SUCCESS, STATUS_CREATED} from "../../constants/data";
 import {Redis} from "../../services/redis";
+import {TicketCreatedPublisher} from "../../events/publishers/ticket-created-publisher";
+import {natsWrapper} from "../../nats-wrapper";
 
 const redisClient = new Redis().createClient()
 
@@ -25,6 +27,7 @@ router.post("/api/tickets", [
 ], async (req: Request, res: Response) => {
     const {title, price} = req.body
     const service = new TicketService()
+    // create ticket
     const ticket = await service
         .setTitle(title)
         .setPrice(price)
@@ -32,7 +35,12 @@ router.post("/api/tickets", [
     // invalidate cache
     await redisClient.del("tickets")
     const resourcesURI =  `/api/tickets/${ticket.id}`
-
+    // publish event
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price
+    })
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
         data: resourcesURI,
