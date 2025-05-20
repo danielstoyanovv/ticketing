@@ -15,7 +15,7 @@ import {natsWrapper} from "./nats-wrapper";
         console.error(err)
     })
 
-const port = process.env.TICKETS_PORT || 5000
+const port = process.env.ORDERS_PORT || 6000
 
 const database = new MongoDbConnect()
 app.listen(port, () => {
