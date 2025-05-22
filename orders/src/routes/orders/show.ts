@@ -17,7 +17,7 @@ router.get("/api/orders/:id", [
     const order = await service
         .setId(id)
         .getOrder()
-    if (!order) throw new NotFoundRequestError("Ticked didn't exists!")
+    if (!order) throw new NotFoundRequestError("Order didn't exists!")
     res.status(STATUS_OK).json({
         status: MESSEGE_SUCCESS,
         data: order,
