@@ -76,3 +76,24 @@ it("return success on order page", async () => {
         expect(response.body.data.status).toEqual("created")
     }
 })
+
+it("return success on order delete", async () => {
+    const testTicket = await ticketService
+        .setTitle("My test ticket")
+        .setPrice(111)
+        .createTicket()
+    const responseOrders = await request(app)
+        .post("/api/orders")
+        .send({
+            ticketId: testTicket.id
+        })
+        .expect(201)
+    expect(responseOrders.body.data).toBeDefined()
+    const uriParts = responseOrders.body.data.split("/")
+    if (uriParts[3]) {
+        await request(app)
+            .delete(`/api/orders/${uriParts[3]}`)
+            .send()
+            .expect(204)
+    }
+})
