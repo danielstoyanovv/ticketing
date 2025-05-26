@@ -40,10 +40,10 @@ router.post("/api/orders", [
         .setExpiredAt(expiration)
         .setStatus("created")
         .createOrder()
-
+    const resourcesURI =  `/api/orders/${order.id}`
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
-        data: order,
+        data: resourcesURI,
         message: ""
     })
 })
