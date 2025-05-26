@@ -8,6 +8,8 @@ import {TicketService} from "../../services/ticketService";
 import {NotFoundRequestError} from "@dmstickets/common";
 import {BadRequestError} from "@dmstickets/common";
 import {OrderService} from "../../services/orderService";
+import {OrderCreatedPublisher} from "../../events/publishers/order-created-publisher";
+import {natsWrapper} from "../../nats-wrapper";
 
 const ticketService = new TicketService()
 const orderService = new OrderService()
@@ -40,7 +42,17 @@ router.post("/api/orders", [
         .setExpiredAt(expiration)
         .setStatus("created")
         .createOrder()
-    const resourcesURI =  `/api/orders/${order.id}`
+    const resourcesURI = `/api/orders/${order.id}`
+    // publish event
+    await new OrderCreatedPublisher(natsWrapper.client).publish({
+        expiredAt: order.expiredAt,
+        id: order.id,
+        status: order.status,
+        ticket: {
+            id: "" + ticketExists.id + "",
+            price: ticketExists.price
+        }
+    })
     res.status(STATUS_CREATED).json({
         status: MESSEGE_SUCCESS,
         data: resourcesURI,
