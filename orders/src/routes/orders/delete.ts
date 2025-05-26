@@ -15,7 +15,7 @@ const router = express.Router()
 router.delete("/api/orders/:id", [
 ], async (req: Request, res: Response) => {
     const { id } = req.params
-    // get orders
+    // get order
     const order = await service
         .setId(id)
         .getOrder()
