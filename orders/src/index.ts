@@ -4,6 +4,8 @@ require('dotenv').config()
 import {MongoDbConnect} from "./config/MongoDbConnect";
 import {app} from "./app"
 import {natsWrapper} from "./nats-wrapper";
+import {TicketCreatedListener} from "./listeners/ticket-created-listener";
+import {TicketUpdatedListener} from "./listeners/ticket-updated-listener";
     natsWrapper.connect("ticketing", "reehh", "http://nats-clusterip-srv:4222").then(result => {
         result.client.on("close", () => {
             console.log("NATS connection closed!")
@@ -14,6 +16,9 @@ import {natsWrapper} from "./nats-wrapper";
     }).catch(err => {
         console.error(err)
     })
+
+new TicketCreatedListener(natsWrapper.client).listen()
+new TicketUpdatedListener(natsWrapper.client).listen()
 
 const port = process.env.ORDERS_PORT || 6000
 

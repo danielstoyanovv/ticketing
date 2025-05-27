@@ -6,12 +6,13 @@ export class TicketRepository {
 
     /**
      * create a new ticket
+     * @param id
      * @param title
      * @param price
      * @return {object}
      */
-    async create(title: string, price: number) {
-        return await Ticket.create({title, price})
+    async create(id: string, title: string, price: number) {
+        return await Ticket.create({_id: id, title, price})
     }
 
     /**
@@ -46,5 +47,22 @@ export class TicketRepository {
      */
     async delete(id: string) {
         await Ticket.findOneAndDelete({_id: id})
+    }
+
+    /**
+     * update ticket
+     * @param id
+     * @param title
+     * @param price
+     * @return {object}
+     */
+    async update(id: string, title: string, price: number) {
+        await Ticket.findOneAndUpdate({_id: id}, {
+            title,
+            price,
+        })
+        return await Ticket
+            .findById(id)
+            .exec()
     }
 }

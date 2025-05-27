@@ -88,7 +88,7 @@ export class TicketService {
      */
     async createTicket() {
         return await repository
-            .create(this.getTitle(), this.getPrice())
+            .create(this.getId(), this.getTitle(), this.getPrice())
     }
 
     /**
@@ -114,5 +114,14 @@ export class TicketService {
      */
     async deleteTicket() {
         await repository.delete(this.getId())
+    }
+
+    /**
+     * Update ticket
+     * @return {object}
+     */
+    async updateTicket() {
+        return await repository
+            .update(this.getId(), this.getTitle(), this.getPrice())
     }
 }
