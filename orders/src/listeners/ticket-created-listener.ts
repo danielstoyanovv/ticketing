@@ -22,5 +22,4 @@ export class TicketCreatedListener extends BaseListener<TicketCreatedEvent>{
 
     queueGroupName = queueGroupName
     subject: Subjects.TicketCreated = Subjects.TicketCreated
-
 }
