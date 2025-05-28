@@ -18,7 +18,6 @@ export class TicketCreatedListener extends BaseListener<TicketCreatedEvent>{
             .createTicket()
 
         msg.ack()
-
     }
 
     queueGroupName = queueGroupName
