@@ -8,10 +8,11 @@ export class TicketRepository {
      * create a new ticket
      * @param title
      * @param price
+     * @param orderId
      * @return {object}
      */
-    async create(title: string, price: number) {
-        return await Ticket.create({title, price})
+    async create(title: string, price: number, orderId: string) {
+        return await Ticket.create({title, price, orderId})
     }
 
     /**
@@ -33,24 +34,25 @@ export class TicketRepository {
     async findAll(limit: object) {
         return await Ticket
             .find()
-            .select("price title _id")
+            .select("price title orderId _id")
             .sort({createdAt: -1})
             .limit(limit)
             .lean()
     }
-
 
     /**
      * update ticket
      * @param id
      * @param title
      * @param price
+     * @param orderId
      * @return {object}
      */
-    async update(id: string, title: string, price: number) {
+    async update(id: string, title: string, price: number,  orderId: string) {
         await Ticket.findOneAndUpdate({_id: id}, {
             title,
             price,
+            orderId
         })
         return await Ticket
             .findById(id)

@@ -1,6 +1,7 @@
 "use strict";
 
 const mongoose = require("mongoose");
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 const ticketSchema = new mongoose.Schema({
     title: {
@@ -14,9 +15,16 @@ const ticketSchema = new mongoose.Schema({
         required: true,
         min: 0, // Prevents negative prices
     },
+    orderId: {
+        type: String,
+        maxlength: 20,
+        default: ""
+    }
 
 }, {
     timestamps: true
 });
 
+ticketSchema.set("versionKey", "version")
+ticketSchema.plugin(updateIfCurrentPlugin);
 export default mongoose.model('Ticket', ticketSchema)

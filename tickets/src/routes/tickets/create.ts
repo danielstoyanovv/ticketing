@@ -31,6 +31,7 @@ router.post("/api/tickets", [
     const ticket = await service
         .setTitle(title)
         .setPrice(price)
+        .setOrderId("")
         .createTicket()
     // invalidate cache
     await redisClient.del("tickets")

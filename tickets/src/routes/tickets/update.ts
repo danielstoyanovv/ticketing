@@ -21,11 +21,15 @@ router.patch("/api/tickets/:id", [
         .notEmpty()
         .isFloat({ gt: 0 })
         .withMessage("Price must be float value greater than 0"),
+    body("orderId")
+        .trim()
+        .notEmpty()
+        .isLength({ min: 1, max: 20 })
+        .withMessage("OrderId must be between 1 and 20"),
     validateRequest,
-    auth
 ], async (req: Request, res: Response) => {
     const { id } = req.params
-    const {title, price} = req.body
+    const {title, price, orderId} = req.body
 
     const service = new TicketService()
 
@@ -38,6 +42,7 @@ router.patch("/api/tickets/:id", [
         .setId(id)
         .setTitle(title)
         .setPrice(price)
+        .setOrderId(orderId)
         .updateTicket()
     // invalidate cache
     await redisClient.del("tickets")

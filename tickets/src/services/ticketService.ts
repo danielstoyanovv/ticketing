@@ -9,6 +9,8 @@ export class TicketService {
     #price: number = 0
     #id: string = ""
     #limit: object = Object()
+    #orderId: string = ""
+
 
     /**
      * get Title
@@ -83,12 +85,31 @@ export class TicketService {
     }
 
     /**
+     * Set is
+     * @param {string} orderId
+     * @return {this}
+     */
+    setOrderId(orderId: string) {
+        this.#orderId = orderId
+        return this
+    }
+
+    /**
+     * Get orderId
+     * @return {string}
+     */
+    getOrderId() {
+        return this.#orderId
+    }
+
+
+    /**
      * Create ticket
      * @return {object}
      */
     async createTicket() {
         return await repository
-            .create(this.getTitle(), this.getPrice())
+            .create(this.getTitle(), this.getPrice(), this.getOrderId())
     }
 
     /**
@@ -114,7 +135,7 @@ export class TicketService {
      */
     async updateTicket() {
         return await repository
-            .update(this.getId(), this.getTitle(), this.getPrice())
+            .update(this.getId(), this.getTitle(), this.getPrice(), this.getOrderId())
     }
 
     /**
