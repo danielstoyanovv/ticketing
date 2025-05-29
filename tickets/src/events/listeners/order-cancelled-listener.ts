@@ -1,14 +1,14 @@
 "use strict";
 
 import {Message} from "node-nats-streaming";
-import {BaseListener, Subjects, OrderCreatedEvent} from "@dmstickets/common";
+import {BaseListener, Subjects, OrderCancelledEvent} from "@dmstickets/common";
 import {queueGroupName} from "./queue-group-name";
 import {TicketService} from "../../services/ticketService";
 import {TicketUpdatedPublisher} from "../publishers/ticket-updated-publisher";
 
 const ticketService = new TicketService()
-export class OrderCreatedListener extends BaseListener<OrderCreatedEvent>{
-    async onMessage(data: OrderCreatedEvent["data"], msg: Message): Promise<void> {
+export class OrderCancelledListener extends BaseListener<OrderCancelledEvent>{
+    async onMessage(data: OrderCancelledEvent["data"], msg: Message): Promise<void> {
         const ticket = await ticketService
             .setId(data.ticket.id)
             .getTicket()
@@ -17,18 +17,18 @@ export class OrderCreatedListener extends BaseListener<OrderCreatedEvent>{
         await ticket
             .setId(data.ticket.id)
             .setTitle(ticket.title)
-            .setPrice(data.ticket.price)
-            .setOrderId(data.id)
+            .setPrice(ticket.price)
+            .setOrderId("")
             .updateTicket()
-        msg.ack()
         await new TicketUpdatedPublisher(this.client).publish({
             id: ticket.id,
-            title: ticket.title,
-            price: ticket.price,
             orderId: ticket.orderId,
+            price: ticket.price,
+            title: ticket.title
         })
+        msg.ack()
     }
 
     queueGroupName = queueGroupName
-    subject: Subjects.OrderCreated = Subjects.OrderCreated
+    subject: Subjects.OrderCancelled = Subjects.OrderCancelled
 }

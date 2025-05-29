@@ -2,7 +2,7 @@
 
 import express, {Request, Response} from "express";
 import { body,  } from "express-validator";
-import {validateRequest, auth, NotFoundRequestError} from "@dmstickets/common";
+import {validateRequest, auth, NotFoundRequestError, BadRequestError} from "@dmstickets/common";
 import {TicketService} from "../../services/ticketService";
 import {MESSEGE_SUCCESS, STATUS_PATCH} from "../../constants/data";
 import {Redis} from "../../services/redis";
@@ -21,11 +21,6 @@ router.patch("/api/tickets/:id", [
         .notEmpty()
         .isFloat({ gt: 0 })
         .withMessage("Price must be float value greater than 0"),
-    body("orderId")
-        .trim()
-        .notEmpty()
-        .isLength({ min: 1, max: 20 })
-        .withMessage("OrderId must be between 1 and 20"),
     validateRequest,
 ], async (req: Request, res: Response) => {
     const { id } = req.params
@@ -37,6 +32,7 @@ router.patch("/api/tickets/:id", [
         .setId(id)
         .getTicket()
     if (!ticketExists) throw new NotFoundRequestError("Ticked didn't exists!")
+    if (ticketExists.orderId) throw new BadRequestError("Cannot edit a reserved ticket")
 
     const ticket =  await service
         .setId(id)
