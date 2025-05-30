@@ -45,7 +45,7 @@ router.post("/api/orders", [
     const resourcesURI = `/api/orders/${order.id}`
     // publish event
     await new OrderCreatedPublisher(natsWrapper.client).publish({
-        expiredAt: order.expiredAt,
+        expiredAt: order.expiredAt.toISOString(),
         id: order.id,
         status: order.status,
         ticket: {
