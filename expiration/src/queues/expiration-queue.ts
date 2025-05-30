@@ -4,6 +4,8 @@ import {Queue} from "bull";
 import {config} from "dotenv"
 config()
 import {Payload} from "./payload";
+import {ExpirationCompletePublisher} from "../events/publishers/expiration-complete-publisher";
+import {natsWrapper} from "../nats-wrapper";
 
 const expirationQueue = new Queue<Payload>("order:expiration", {
     redis: {
@@ -12,10 +14,10 @@ const expirationQueue = new Queue<Payload>("order:expiration", {
 })
 
 expirationQueue.process(async (job) => {
-    console.log(
-        "I want to publish an expiration:complete event for orderId"
-        , job.data.orderId
-    )
+    await new ExpirationCompletePublisher(natsWrapper.client).publish({
+        orderId: job.data.orderId
+
+    })
 })
 
 export { expirationQueue }
