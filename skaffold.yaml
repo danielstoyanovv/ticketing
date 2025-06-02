@@ -40,3 +40,11 @@ build:
               manual:
                   src: "src/**/*.ts"
                   dest: .
+        - image: stoyanov1234/ticketing-payments
+          context: payments
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  src: "src/**/*.ts"
+                  dest: .
