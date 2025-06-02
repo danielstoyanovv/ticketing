@@ -48,4 +48,23 @@ export class OrderRepository {
     async delete(id: string) {
         await Order.findOneAndDelete({_id: id})
     }
+
+    /**
+     * Update order
+     * @param id
+     * @param status
+     * @param expiredAt
+     * @param ticketId
+     * @return {object}
+     */
+    async update(id: string, status: string, expiredAt: Date, ticketId: string) {
+        await Order.findOneAndUpdate({_id: id}, {
+            status,
+            expiredAt,
+            ticketId
+        })
+        return await Order
+            .findById(id)
+            .exec()
+    }
 }

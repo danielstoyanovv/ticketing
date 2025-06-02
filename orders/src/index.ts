@@ -6,6 +6,7 @@ import {app} from "./app"
 import {natsWrapper} from "./nats-wrapper";
 import {TicketCreatedListener} from "./listeners/ticket-created-listener";
 import {TicketUpdatedListener} from "./listeners/ticket-updated-listener";
+import {ExpirationCompleteListener} from "./listeners/expiration-complete-listener";
     natsWrapper.connect("ticketing", "reehh", "http://nats-clusterip-srv:4222").then(result => {
         result.client.on("close", () => {
             console.log("NATS connection closed!")
@@ -19,6 +20,7 @@ import {TicketUpdatedListener} from "./listeners/ticket-updated-listener";
 
 new TicketCreatedListener(natsWrapper.client).listen()
 new TicketUpdatedListener(natsWrapper.client).listen()
+new ExpirationCompleteListener(natsWrapper.client).listen()
 
 const port = process.env.ORDERS_PORT || 6000
 

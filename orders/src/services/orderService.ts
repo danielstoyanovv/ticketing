@@ -34,7 +34,7 @@ export class OrderService {
      * get ticket Id
      * @return string
      */
-    getTcketId(): string {
+    getTicketId(): string {
         return this.#ticketId;
     }
 
@@ -43,7 +43,7 @@ export class OrderService {
      * set ticket Id
      * @param ticketId
      */
-    setTcketId(ticketId: string) {
+    setTicketId(ticketId: string) {
         this.#ticketId = ticketId;
         return this
     }
@@ -105,16 +105,16 @@ export class OrderService {
     }
 
     /**
-     * Create ticket
+     * Create order
      * @return {object}
      */
     async createOrder() {
         return await repository
-            .create(this.getStatus(), this.getExpiredAt(), this.getTcketId())
+            .create(this.getStatus(), this.getExpiredAt(), this.getTicketId())
     }
 
     /**
-     * Get ticket
+     * Get order
      * @return {object}
      */
     async getOrder() {
@@ -122,7 +122,7 @@ export class OrderService {
     }
 
     /**
-     * Get users
+     * Get orders
      * @return {object}
      */
     async getOrders() {
@@ -131,10 +131,19 @@ export class OrderService {
     }
 
     /**
-     * Delete ticket
+     * Delete order
      * @return {void}
      */
     async deleteOrder() {
         await repository.delete(this.getId())
+    }
+
+    /**
+     * Update order
+     * @return {object}
+     */
+    async updateOrder() {
+        return await repository
+            .update(this.getId(), this.getStatus(), this.getExpiredAt(), this.getTicketId())
     }
 }
