@@ -97,7 +97,6 @@ export class OrderService {
      * @return {object}
      */
     async getOrder() {
-
         return await repository.findById(this.getId())
     }
 
