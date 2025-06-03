@@ -6,12 +6,14 @@ export class OrderRepository {
 
     /**
      * Create a new order
+     * @param id
      * @param status
      * @param price
      * @return {object}
      */
-    async create(status: string, price: number) {
-        return await Order.create({status, price})
+    async create(id: string, status: string, price: number) {
+        const _id = id
+        return await Order.create({_id, status, price})
     }
 
     /**

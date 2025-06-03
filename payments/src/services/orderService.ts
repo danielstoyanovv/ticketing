@@ -89,7 +89,7 @@ export class OrderService {
      */
     async createOrder() {
         return await repository
-            .create(this.getStatus(), this.getPrice())
+            .create(this.getId(), this.getStatus(), this.getPrice())
     }
 
     /**
@@ -97,6 +97,7 @@ export class OrderService {
      * @return {object}
      */
     async getOrder() {
+
         return await repository.findById(this.getId())
     }
 
