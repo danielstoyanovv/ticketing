@@ -8,7 +8,7 @@ import {
 } from "../constants/data"
 import { OrderService } from "../services/orderService";
 import { validateRequest, BadRequestError, NotFoundRequestError } from "@dmstickets/common";
-import {stripe} from "../stripe";
+import {stripe} from "../services/stripe";
 
 const orderService = new OrderService()
 
