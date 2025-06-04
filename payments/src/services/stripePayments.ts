@@ -30,7 +30,6 @@ export class StripePayments {
         // });
 
         return payment
-        // return payment.client_secret
     }
 
     /**
