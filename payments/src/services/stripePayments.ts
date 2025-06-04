@@ -13,7 +13,7 @@ export class StripePayments {
     /**
      * process Transaction
      * @param order
-     * @return {string}
+     * @return {object}
      */
     async processTransaction(order: Object) {
         const payment = await this.client.paymentIntents.create({
@@ -29,7 +29,8 @@ export class StripePayments {
         //     source: "tok_visa",
         // });
 
-        return payment.client_secret
+        return payment
+        // return payment.client_secret
     }
 
     /**
@@ -41,7 +42,7 @@ export class StripePayments {
         const elements = await this.client.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');
-        const { error, paymentIntent }  = await this.client.confirmCardPayment(secret, {
+        const { error, paymentIntent } = await this.client.confirmCardPayment(secret, {
             payment_method: {
                 card: cardElement, // Collected from Stripe Elements
                 billing_details: { name: 'Customer Name' },

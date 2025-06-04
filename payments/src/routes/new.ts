@@ -10,9 +10,11 @@ import { OrderService } from "../services/orderService";
 import { validateRequest, BadRequestError, NotFoundRequestError } from "@dmstickets/common";
 import {StripePayments} from "../services/stripePayments";
 import Stripe from "stripe"
+import {PaymentService} from "../services/paymentService";
 
 const orderService = new OrderService()
 const stripePayments = new StripePayments(Stripe)
+const paymentService = new PaymentService()
 
 const router = express.Router()
 
@@ -31,11 +33,14 @@ router.post("/api/payments", [
     if (!order) throw new NotFoundRequestError("Order not found")
     if (order.status === "cancelled") throw new BadRequestError("Order is cancelled")
 
-    const clientSecret = stripePayments.processTransaction(order)
-    clientSecret.then(result => {
-        stripePayments.approveTransaction(result)
+    const paymentData = stripePayments.processTransaction(order)
+    paymentData.then(async result => {
+        await paymentService
+            .setOrderId(orderId)
+            .setStripeId(result.id)
+            .createPayment()
+        await stripePayments.approveTransaction(result.client_secret)
     })
-
     res.status(STATUS_OK).json({
         status: MESSEGE_SUCCESS,
         data: "",

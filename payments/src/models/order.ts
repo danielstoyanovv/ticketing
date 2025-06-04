@@ -17,5 +17,4 @@ const orderSchema = new mongoose.Schema({
     timestamps: true
 });
 
-orderSchema.set("versionKey", "version")
 export default mongoose.model('Order', orderSchema)
