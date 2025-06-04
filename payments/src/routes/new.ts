@@ -8,9 +8,11 @@ import {
 } from "../constants/data"
 import { OrderService } from "../services/orderService";
 import { validateRequest, BadRequestError, NotFoundRequestError } from "@dmstickets/common";
-import {stripe} from "../services/stripe";
+import {StripePayments} from "../services/stripePayments";
+import Stripe from "stripe"
 
 const orderService = new OrderService()
+const stripePayments = new StripePayments(Stripe)
 
 const router = express.Router()
 
@@ -28,11 +30,11 @@ router.post("/api/payments", [
         .getOrder()
     if (!order) throw new NotFoundRequestError("Order not found")
     if (order.status === "cancelled") throw new BadRequestError("Order is cancelled")
-    const charge = await stripe.charges.create({
-        amount: order.price * 100,
-        currency: 'usd',
-        source: "tok_visa",
-    });
+
+    const clientSecret = stripePayments.processTransaction(order)
+    clientSecret.then(result => {
+        stripePayments.approveTransaction(result)
+    })
 
     res.status(STATUS_OK).json({
         status: MESSEGE_SUCCESS,
