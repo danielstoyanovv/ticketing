@@ -32,8 +32,12 @@ export class StripePayments {
         return payment.client_secret
     }
 
+    /**
+     * approve Transaction
+     * @param secret
+     * @return {void}
+     */
     async approveTransaction(secret: string) {
-        console.log(secret)
         const elements = await this.client.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');
