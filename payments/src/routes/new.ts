@@ -13,7 +13,6 @@ import Stripe from "stripe"
 import {PaymentService} from "../services/paymentService";
 import {PaymentCreatedPublisher} from "../events/publishers/payment-created-publisher";
 import {natsWrapper} from "../nats-wrapper";
-import payment from "../models/payment";
 
 const orderService = new OrderService()
 const stripePayments = new StripePayments(Stripe)
