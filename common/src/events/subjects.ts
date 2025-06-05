@@ -1,7 +1,5 @@
 "use strict";
 
-import {PaymentCreatedEvent} from "./payment-created-event";
-
 export enum Subjects {
     TicketCreated = "ticket:created",
     TicketUpdated = "ticket:updated",
