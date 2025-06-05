@@ -4,13 +4,16 @@ import express, {Request, Response} from "express";
 import { body } from "express-validator";
 import {
     MESSEGE_SUCCESS,
-    STATUS_OK,
+    STATUS_CREATED,
 } from "../constants/data"
 import { OrderService } from "../services/orderService";
 import { validateRequest, BadRequestError, NotFoundRequestError } from "@dmstickets/common";
 import {StripePayments} from "../services/stripePayments";
 import Stripe from "stripe"
 import {PaymentService} from "../services/paymentService";
+import {PaymentCreatedPublisher} from "../events/publishers/payment-created-publisher";
+import {natsWrapper} from "../nats-wrapper";
+import payment from "../models/payment";
 
 const orderService = new OrderService()
 const stripePayments = new StripePayments(Stripe)
@@ -35,18 +38,22 @@ router.post("/api/payments", [
 
     const paymentData = stripePayments.processTransaction(order)
     paymentData.then(async result => {
-        await paymentService
+        const payment = await paymentService
             .setOrderId(orderId)
             .setStripeId(result.id)
             .createPayment()
         await stripePayments.approveTransaction(result.client_secret)
+        await new PaymentCreatedPublisher(natsWrapper.client).publish({
+            id: payment.id, orderId: payment.orderId, stripeId: payment.stripeId
+        })
+        res.status(STATUS_CREATED).json({
+            status: MESSEGE_SUCCESS,
+            data: {
+                id: payment.id
+            },
+            message: "Successful payment"
+        })
     })
-    res.status(STATUS_OK).json({
-        status: MESSEGE_SUCCESS,
-        data: "",
-        message: "Successful payment"
-    })
-
 })
 
 export { router as createChargeRouter }
