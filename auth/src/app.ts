@@ -29,5 +29,5 @@ app.use(cors())
 app.use(currentUserRouter)
 app.use(signinRouter)
 app.use(signupRouter)
-// app.use(errorHandler)
+app.use(errorHandler)
 export default { app }
