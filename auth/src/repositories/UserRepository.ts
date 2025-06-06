@@ -14,7 +14,7 @@ export class UserRepository {
     }
 
     /**
-     * Find by field
+     * Find user
      * @param value
      * @return {object}
      */
