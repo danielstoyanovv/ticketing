@@ -13,11 +13,11 @@ export const getCachedTicket = async (req: Request, res: Response, next: NextFun
     const redisClient = new Redis().createClient()
     const cachedData = await redisClient.get(cacheKey);
     if (cachedData) {
-        const user = JSON.parse(cachedData)
+        const ticket = JSON.parse(cachedData)
         console.log('Cache hit');
         return res.status(STATUS_OK).json({
             status: MESSEGE_SUCCESS,
-            data: user,
+            data: ticket,
             message: ""
         })
     }

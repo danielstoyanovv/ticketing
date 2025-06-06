@@ -21,7 +21,6 @@ const useRequest = (url, method, body) => {
 
             if (response && response.status === 201) return await response.data
             if (response && response.status === 200) return await response.data
-
     }
 
     return {doRequest, errors}
