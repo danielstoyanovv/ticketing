@@ -5,7 +5,7 @@ import Order from "../models/order";
 export class OrderRepository {
 
     /**
-     * create new Order
+     * create a new Order
      * @param status
      * @param expiredAt
      * @param ticketId
