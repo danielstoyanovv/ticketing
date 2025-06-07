@@ -26,7 +26,7 @@ export class TokenManager {
     }
 
     /**
-     * Check Is authentication token expired
+     * Check Is authentication token is expired
      * @return {boolean}
      */
     async isExpired() {
