@@ -17,7 +17,7 @@ it("return an error if an invalid token is provided", async () => {
         .send({
             orderId: new mongoose.Types.ObjectId()
         })
-        .expect(400)
+        .expect(404)
 })
 
 it("return an error if an non-existent order is provided", async () => {
