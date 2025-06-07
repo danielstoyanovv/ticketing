@@ -17,7 +17,7 @@ export class OrderRepository {
     }
 
     /**
-     * Find
+     * Find order
      * @param id
      * @return {object}
      */
