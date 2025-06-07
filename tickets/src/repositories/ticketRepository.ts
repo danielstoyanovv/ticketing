@@ -60,7 +60,7 @@ export class TicketRepository {
     }
 
     /**
-     * Delete ticket
+     * Delete the ticket
      * @param id
      * @return {void}
      */
