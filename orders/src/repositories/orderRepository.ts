@@ -41,7 +41,7 @@ export class OrderRepository {
     }
 
     /**
-     * Delete order
+     * Delete the order
      * @param id
      * @return {void}
      */
