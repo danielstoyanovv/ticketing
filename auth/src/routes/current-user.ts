@@ -8,7 +8,7 @@ router.get("/api/users/current-user", [
     auth,
     currentUser
 ], (req: Request, res: Response) => {
-    res.send("Hi there!")
+    res.send("How are you?")
 })
 
 export { router as currentUserRouter }
