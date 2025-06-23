@@ -1,8 +1,9 @@
 "use strict";
 
 import User from "../models/user";
+import {UserRepositoryInterface} from "./UserRepositoryInterface";
 
-export class UserRepository {
+export class UserRepository implements UserRepositoryInterface {
     /**
      * Create new user
      * @param email
@@ -20,6 +21,6 @@ export class UserRepository {
      */
     async findByField(value: string) {
         const email = value
-        return await User.findOne({ email });
+        return await User.findOne({email});
     }
 }

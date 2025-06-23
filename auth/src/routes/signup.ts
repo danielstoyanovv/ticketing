@@ -9,6 +9,7 @@ import {
 import { UserService } from "../services/UserService";
 import { Password } from "../services/password";
 import { validateRequest, BadRequestError } from "@dmstickets/common";
+import {UserRepository} from "../repositories/UserRepository";
 
 const router = express.Router()
 
@@ -29,7 +30,7 @@ router.post("/api/users/signup", [
     const password = await Password
         .toHash(req.body.password)
 
-    const service = new UserService()
+    const service = new UserService(new UserRepository())
     const exists = await service
         .setEmail(email)
         .userExists()

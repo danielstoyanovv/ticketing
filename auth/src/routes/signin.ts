@@ -7,6 +7,7 @@ import { UserService } from "../services/UserService";
 import {Password} from "../services/password";
 import { Token } from "../services/token";
 import {MESSEGE_SUCCESS, STATUS_OK} from "../constants/data";
+import {UserRepository} from "../repositories/UserRepository";
 
 const router = express.Router()
 router.post("/api/users/signin", [
@@ -22,7 +23,7 @@ router.post("/api/users/signin", [
 ], async (req: Request, res: Response) => {
     const {email, password} = req.body
 
-    const service = new UserService()
+    const service = new UserService(new UserRepository)
     const existsUser = await service
         .setEmail(email)
         .userExists()
