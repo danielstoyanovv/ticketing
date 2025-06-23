@@ -5,8 +5,9 @@ import {BaseListener, Subjects, ExpirationCompleteEvent} from "@dmstickets/commo
 import {queueGroupName} from "./queue-group-name";
 import {OrderService} from "../services/orderService";
 import {OrderCancelledPublisher} from "../events/publishers/order-cancelled-publisher";
+import {OrderRepository} from "../repositories/orderRepository";
 
-const orderService = new OrderService()
+const orderService = new OrderService(new OrderRepository())
 
 export class ExpirationCompleteListener extends BaseListener<ExpirationCompleteEvent>{
     async onMessage(data: ExpirationCompleteEvent["data"], msg: Message): Promise<void> {

@@ -10,9 +10,11 @@ import {BadRequestError} from "@dmstickets/common";
 import {OrderService} from "../../services/orderService";
 import {OrderCreatedPublisher} from "../../events/publishers/order-created-publisher";
 import {natsWrapper} from "../../nats-wrapper";
+import {OrderRepository} from "../../repositories/orderRepository";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
-const ticketService = new TicketService()
-const orderService = new OrderService()
+const ticketService = new TicketService(new TicketRepository())
+const orderService = new OrderService(new OrderRepository())
 
 const router = express.Router()
 

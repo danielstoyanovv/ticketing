@@ -1,8 +1,9 @@
 "use strict";
 
 import Ticket from "../models/ticket";
+import {TicketRepositoryInterface} from "./ticketRepositoryInterface";
 
-export class TicketRepository {
+export class TicketRepository implements TicketRepositoryInterface {
 
     /**
      * create a new ticket

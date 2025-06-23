@@ -2,10 +2,12 @@
 
 import jwt from "jsonwebtoken"
 import {config} from "dotenv"
+import {TokenInterface} from "./tokenInterface";
+
 config()
-export class Token {
-    #id: string = ""
-    #email: string = ""
+export class Token implements TokenInterface {
+    id: string = ""
+    email: string = ""
 
     /**
      * Set id
@@ -13,31 +15,34 @@ export class Token {
      * @return {this}
      */
     setId(id: string) {
-        this.#id = id
+        this.id = id
         return this
     }
+
     /**
      * get id
      * @return {string}
      */
     getId() {
-        return this.#id
+        return this.id
     }
+
     /**
      * Set email
      * @param {string} email
      * @return {this}
      */
     setEmail(email: string) {
-        this.#email = email
+        this.email = email
         return this
     }
+
     /**
      * get email
      * @return {string}
      */
     getEmail() {
-        return this.#email
+        return this.email
     }
 
     /**

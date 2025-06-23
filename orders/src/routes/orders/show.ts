@@ -7,8 +7,9 @@ import {
 } from "../../constants/data";
 import {OrderService} from "../../services/orderService";
 import {NotFoundRequestError} from "@dmstickets/common";
+import {OrderRepository} from "../../repositories/orderRepository";
 
-const service = new OrderService()
+const service = new OrderService(new OrderRepository())
 
 const router = express.Router()
 router.get("/api/orders/:id", [

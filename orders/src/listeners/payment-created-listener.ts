@@ -4,8 +4,9 @@ import {Message} from "node-nats-streaming";
 import {BaseListener, Subjects, PaymentCreatedEvent} from "@dmstickets/common";
 import {queueGroupName} from "./queue-group-name";
 import {OrderService} from "../services/orderService";
+import {OrderRepository} from "../repositories/orderRepository";
 
-const orderService = new OrderService()
+const orderService = new OrderService(new OrderRepository())
 
 export class PaymentCreatedListener extends BaseListener<PaymentCreatedEvent>{
     async onMessage(data: PaymentCreatedEvent["data"], msg: Message): Promise<void> {
@@ -24,4 +25,4 @@ export class PaymentCreatedListener extends BaseListener<PaymentCreatedEvent>{
 
     queueGroupName = queueGroupName
     subject: Subjects.PaymentCreated = Subjects.PaymentCreated
-}a
+}

@@ -4,8 +4,9 @@ import {Message} from "node-nats-streaming";
 import {BaseListener, Subjects, TicketUpdatedEvent} from "@dmstickets/common";
 import {queueGroupName} from "./queue-group-name";
 import {TicketService} from "../services/ticketService";
+import {TicketRepository} from "../repositories/ticketRepository";
 
-const ticketService = new TicketService()
+const ticketService = new TicketService(new TicketRepository())
 
 export class TicketUpdatedListener extends BaseListener<TicketUpdatedEvent>{
     async onMessage(data: TicketUpdatedEvent["data"], msg: Message): Promise<void> {

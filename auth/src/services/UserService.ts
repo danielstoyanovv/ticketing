@@ -1,19 +1,23 @@
 "use strict";
 
-import {UserRepository} from "../repositories/UserRepository";
+import {UserServiceInterface} from "./UserServiceInterface";
+import {UserRepositoryInterface} from "../repositories/UserRepositoryInterface";
 
-const repository = new UserRepository()
+export class UserService implements UserServiceInterface {
+    email: string = ""
+    password: string = ""
+    interface: UserRepositoryInterface;
 
-export class UserService {
-    #email: string = ""
-    #password: string = ""
+    constructor(repository: UserRepositoryInterface) {
+        this.interface = repository;
+    }
 
     /**
      * get password
      * @return {string}
      */
     getPassword(): string {
-        return this.#password;
+        return this.password;
     }
 
     /**
@@ -22,7 +26,7 @@ export class UserService {
      * @return {this}
      */
     setPassword(value: string) {
-        this.#password = value;
+        this.password = value;
         return this
     }
 
@@ -31,7 +35,7 @@ export class UserService {
      * @return {string}
      */
     getEmail(): string {
-        return this.#email;
+        return this.email;
     }
 
     /**
@@ -40,7 +44,7 @@ export class UserService {
      * @return {this}
      */
     setEmail(value: string) {
-        this.#email = value;
+        this.email = value;
         return this
     }
 
@@ -49,7 +53,7 @@ export class UserService {
      * @return {object}
      */
     async createUser() {
-        return await repository.createUser(
+        return await this.interface.createUser(
             this.getEmail(),
             this.getPassword()
         )
@@ -60,7 +64,7 @@ export class UserService {
      * @return {object}
      */
     async userExists() {
-        return await repository
+        return await this.interface
             .findByField(this.getEmail())
 
     }

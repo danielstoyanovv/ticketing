@@ -1,21 +1,25 @@
 "use strict";
 
-import {TicketRepository} from "../repositories/ticketRepository";
+import {TicketServiceInterface} from "./ticketServiceInterface";
+import {TicketRepositoryInterface} from "../repositories/ticketRepositoryInterface";
 
-const repository = new TicketRepository()
+export class TicketService implements TicketServiceInterface {
+    title: string = ""
+    price: number = 0
+    id: string = ""
+    limit: object = Object()
+    interface: TicketRepositoryInterface;
 
-export class TicketService {
-    #title: string = ""
-    #price: number = 0
-    #id: string = ""
-    #limit: object = Object()
+    constructor(repository: TicketRepositoryInterface) {
+        this.interface = repository;
+    }
 
     /**
      * get Title
      * @return string
      */
     getTitle(): string {
-        return this.#title;
+        return this.title;
     }
 
     /**
@@ -24,7 +28,7 @@ export class TicketService {
      * @return this
      */
     setTitle(value: string) {
-        this.#title = value;
+        this.title = value;
         return this
     }
 
@@ -33,7 +37,7 @@ export class TicketService {
      * @return number
      */
     getPrice(): number {
-        return this.#price;
+        return this.price;
     }
 
     /**
@@ -42,7 +46,7 @@ export class TicketService {
      * @return this
      */
     setPrice(value: number) {
-        this.#price = value;
+        this.price = value;
         return this
     }
 
@@ -52,7 +56,7 @@ export class TicketService {
      * @return {this}
      */
     setId(id: string) {
-        this.#id = id
+        this.id = id
         return this
     }
 
@@ -61,7 +65,7 @@ export class TicketService {
      * @return {string}
      */
     getId() {
-        return this.#id
+        return this.id
     }
 
     /**
@@ -70,7 +74,7 @@ export class TicketService {
      * @return {this}
      */
     setLimit(limit: object) {
-        this.#limit = limit
+        this.limit = limit
         return this
     }
 
@@ -79,7 +83,7 @@ export class TicketService {
      * @return {object}
      */
     getLimit() {
-        return this.#limit
+        return this.limit
     }
 
     /**
@@ -87,7 +91,7 @@ export class TicketService {
      * @return {object}
      */
     async createTicket() {
-        return await repository
+        return await this.interface
             .create(this.getId(), this.getTitle(), this.getPrice())
     }
 
@@ -96,7 +100,8 @@ export class TicketService {
      * @return {object}
      */
     async getTicket() {
-        return await repository.findById(this.getId())
+        return await this.interface
+            .findById(this.getId())
     }
 
     /**
@@ -104,7 +109,7 @@ export class TicketService {
      * @return {object}
      */
     async getTickets() {
-        return await repository
+        return await this.interface
             .findAll(this.getLimit())
     }
 
@@ -113,7 +118,8 @@ export class TicketService {
      * @return {void}
      */
     async deleteTicket() {
-        await repository.delete(this.getId())
+        await this.interface
+            .delete(this.getId())
     }
 
     /**
@@ -121,7 +127,7 @@ export class TicketService {
      * @return {object}
      */
     async updateTicket() {
-        return await repository
+        return await this.interface
             .update(this.getId(), this.getTitle(), this.getPrice())
     }
 }

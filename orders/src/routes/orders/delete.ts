@@ -8,8 +8,9 @@ import {OrderService} from "../../services/orderService";
 import {NotFoundRequestError} from "@dmstickets/common";
 import {OrderCancelledPublisher} from "../../events/publishers/order-cancelled-publisher";
 import {natsWrapper} from "../../nats-wrapper";
+import {OrderRepository} from "../../repositories/orderRepository";
 
-const service = new OrderService()
+const service = new OrderService(new OrderRepository())
 
 const router = express.Router()
 router.delete("/api/orders/:id", [
