@@ -1,12 +1,17 @@
 "use strict";
 
-import {PaymentRepository} from "../repositories/paymentRepository";
+import {PaymentServiceinterface} from "./paymentServiceInterface";
+import {PaymentRepositoryinterface} from "../repositories/paymentRepositoryInterface";
 
-const repository = new PaymentRepository()
+export class PaymentService implements PaymentServiceinterface {
+    orderId: string = ""
+    stripeId: string = ""
 
-export class PaymentService {
-    #orderId: string = ""
-    #stripeId: string = ""
+    interface: PaymentRepositoryinterface;
+
+    constructor(repository: PaymentRepositoryinterface) {
+        this.interface = repository;
+    }
 
 
     /**
@@ -14,7 +19,7 @@ export class PaymentService {
      * @return string
      */
     getOrderId(): string {
-        return this.#orderId;
+        return this.orderId;
     }
 
     /**
@@ -23,10 +28,9 @@ export class PaymentService {
      * @return this
      */
     setOrderId(orderId: string) {
-        this.#orderId = orderId;
+        this.orderId = orderId;
         return this
     }
-
 
 
     /**
@@ -35,7 +39,7 @@ export class PaymentService {
      * @return {this}
      */
     setStripeId(stripeId: string) {
-        this.#stripeId = stripeId
+        this.stripeId = stripeId
         return this
     }
 
@@ -44,7 +48,7 @@ export class PaymentService {
      * @return {string}
      */
     getStripeId() {
-        return this.#stripeId
+        return this.stripeId
     }
 
 
@@ -53,7 +57,7 @@ export class PaymentService {
      * @return {object}
      */
     async createPayment() {
-        return await repository
+        return await this.interface
             .create(this.getOrderId(), this.getStripeId())
     }
 }

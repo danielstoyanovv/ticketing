@@ -1,8 +1,9 @@
 "use strict";
 
 import Payment from "../models/payment";
+import {PaymentRepositoryinterface} from "./paymentRepositoryInterface";
 
-export class PaymentRepository {
+export class PaymentRepository implements PaymentRepositoryinterface {
 
     /**
      * Create a new payment

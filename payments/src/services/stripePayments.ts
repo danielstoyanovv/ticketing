@@ -1,9 +1,11 @@
 "use strict";
 
+import {PaymentsInterface} from "./paymentsInterface";
+
 require('dotenv').config()
 const Stripe = require('stripe');
 
-export class StripePayments {
+export class StripePayments implements PaymentsInterface {
     constructor(client: Object) {
         this.client = Stripe(process.env.STRIPE_SECRET_KEY, {
             apiVersion: "2020-03-02"
@@ -41,10 +43,10 @@ export class StripePayments {
         const elements = await this.client.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');
-        const { error, paymentIntent } = await this.client.confirmCardPayment(secret, {
+        const {error, paymentIntent} = await this.client.confirmCardPayment(secret, {
             payment_method: {
                 card: cardElement, // Collected from Stripe Elements
-                billing_details: { name: 'Customer Name' },
+                billing_details: {name: 'Customer Name'},
             },
         });
         console.log(error)

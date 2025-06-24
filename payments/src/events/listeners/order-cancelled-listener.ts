@@ -4,8 +4,9 @@ import {Message} from "node-nats-streaming";
 import {BaseListener, Subjects, OrderCancelledEvent} from "@dmstickets/common";
 import {queueGroupName} from "./queue-group-name";
 import {OrderService} from "../../services/orderService";
+import {OrderRepository} from "../../repositories/orderRepository";
 
-const orderService = new OrderService()
+const orderService = new OrderService(new OrderRepository())
 export class OrderCancelledListener extends BaseListener<OrderCancelledEvent>{
     async onMessage(data: OrderCancelledEvent["data"], msg: Message): Promise<void> {
         const order = await orderService

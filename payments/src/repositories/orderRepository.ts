@@ -1,8 +1,9 @@
 "use strict";
 
 import Order from "../models/order";
+import {OrderRepositoryinterface} from "./orderRepositoryInterface";
 
-export class OrderRepository {
+export class OrderRepository implements OrderRepositoryinterface {
 
     /**
      * Create a new order

@@ -13,10 +13,12 @@ import Stripe from "stripe"
 import {PaymentService} from "../services/paymentService";
 import {PaymentCreatedPublisher} from "../events/publishers/payment-created-publisher";
 import {natsWrapper} from "../nats-wrapper";
+import {OrderRepository} from "../repositories/orderRepository";
+import {PaymentRepository} from "../repositories/paymentRepository";
 
-const orderService = new OrderService()
+const orderService = new OrderService(new OrderRepository())
 const stripePayments = new StripePayments(Stripe)
-const paymentService = new PaymentService()
+const paymentService = new PaymentService(new PaymentRepository)
 
 const router = express.Router()
 

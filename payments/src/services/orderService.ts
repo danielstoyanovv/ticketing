@@ -1,21 +1,26 @@
 "use strict";
 
-import {OrderRepository} from "../repositories/orderRepository";
+import {OrderRepositoryinterface} from "../repositories/orderRepositoryInterface";
+import {OrderServiceinterface} from "./orderServiceInterface";
 
-const repository = new OrderRepository()
 
-export class OrderService {
-    #status: string = ""
-    #price: number = 0
-    #id: string = ""
-    #limit: object = Object()
+export class OrderService implements OrderServiceinterface {
+    status: string = ""
+    price: number = 0
+    id: string = ""
+    limit: object = Object()
+    interface: OrderRepositoryinterface;
+
+    constructor(repository: OrderRepositoryinterface) {
+        this.interface = repository;
+    }
 
     /**
      * get status
      * @return string
      */
     getStatus(): string {
-        return this.#status;
+        return this.status;
     }
 
     /**
@@ -24,7 +29,7 @@ export class OrderService {
      * @return this
      */
     setStatus(status: string) {
-        this.#status = status;
+        this.status = status;
         return this
     }
 
@@ -33,7 +38,7 @@ export class OrderService {
      * @return string
      */
     getPrice(): number {
-        return this.#price;
+        return this.price;
     }
 
 
@@ -43,7 +48,7 @@ export class OrderService {
      * @return {this}
      */
     setPrice(price: number) {
-        this.#price = price;
+        this.price = price;
         return this
     }
 
@@ -53,7 +58,7 @@ export class OrderService {
      * @return {this}
      */
     setId(id: string) {
-        this.#id = id
+        this.id = id
         return this
     }
 
@@ -62,7 +67,7 @@ export class OrderService {
      * @return {string}
      */
     getId() {
-        return this.#id
+        return this.id
     }
 
     /**
@@ -71,7 +76,7 @@ export class OrderService {
      * @return {this}
      */
     setLimit(limit: object) {
-        this.#limit = limit
+        this.limit = limit
         return this
     }
 
@@ -80,7 +85,7 @@ export class OrderService {
      * @return {object}
      */
     getLimit() {
-        return this.#limit
+        return this.limit
     }
 
     /**
@@ -88,7 +93,7 @@ export class OrderService {
      * @return {object}
      */
     async createOrder() {
-        return await repository
+        return await this.interface
             .create(this.getId(), this.getStatus(), this.getPrice())
     }
 
@@ -97,7 +102,8 @@ export class OrderService {
      * @return {object}
      */
     async getOrder() {
-        return await repository.findById(this.getId())
+        return await this.interface
+            .findById(this.getId())
     }
 
     /**
@@ -105,7 +111,7 @@ export class OrderService {
      * @return {object}
      */
     async getOrders() {
-        return await repository
+        return await this.interface
             .findAll(this.getLimit())
     }
 
@@ -114,7 +120,8 @@ export class OrderService {
      * @return {void}
      */
     async deleteOrder() {
-        await repository.delete(this.getId())
+        await this.interface
+            .delete(this.getId())
     }
 
     /**
@@ -122,7 +129,7 @@ export class OrderService {
      * @return {object}
      */
     async updateOrder() {
-        return await repository
+        return await this.interface
             .update(this.getId(), this.getStatus(), this.getPrice())
     }
 }
