@@ -9,6 +9,7 @@ import {TicketService} from "../../services/ticketService";
 import {Redis} from "../../services/redis";
 import {getCachedTicket} from "../../middlewares/getCachedTicket";
 import {NotFoundRequestError} from "@dmstickets/common";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
 const redisClient = new Redis().createClient()
 
@@ -17,7 +18,7 @@ router.get("/api/tickets/:id", [
     getCachedTicket
 ], async (req: Request, res: Response) => {
     const { id } = req.params
-    const service = new TicketService
+    const service = new TicketService(new TicketRepository())
     const ticket = await service
         .setId(id)
         .getTicket()

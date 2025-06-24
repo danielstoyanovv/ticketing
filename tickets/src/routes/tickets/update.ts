@@ -6,6 +6,7 @@ import {validateRequest, auth, NotFoundRequestError, BadRequestError} from "@dms
 import {TicketService} from "../../services/ticketService";
 import {MESSEGE_SUCCESS, STATUS_PATCH} from "../../constants/data";
 import {Redis} from "../../services/redis";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
 const redisClient = new Redis().createClient()
 
@@ -26,7 +27,7 @@ router.patch("/api/tickets/:id", [
     const { id } = req.params
     const {title, price, orderId} = req.body
 
-    const service = new TicketService()
+    const service = new TicketService(new TicketRepository())
 
     const ticketExists = await service
         .setId(id)

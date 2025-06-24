@@ -7,8 +7,9 @@ import {
 import {Redis} from "../../services/redis";
 import {TicketService} from "../../services/ticketService";
 import {auth} from "@dmstickets/common";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
-const service = new TicketService()
+const service = new TicketService(new TicketRepository())
 const redisClient = new Redis().createClient()
 
 const router = express.Router()

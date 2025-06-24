@@ -5,8 +5,9 @@ import {BaseListener, Subjects, OrderCancelledEvent} from "@dmstickets/common";
 import {queueGroupName} from "./queue-group-name";
 import {TicketService} from "../../services/ticketService";
 import {TicketUpdatedPublisher} from "../publishers/ticket-updated-publisher";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
-const ticketService = new TicketService()
+const ticketService = new TicketService(new TicketRepository())
 export class OrderCancelledListener extends BaseListener<OrderCancelledEvent>{
     async onMessage(data: OrderCancelledEvent["data"], msg: Message): Promise<void> {
         const ticket = await ticketService

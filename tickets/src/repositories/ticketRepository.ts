@@ -1,8 +1,9 @@
 "use strict";
 
 import Ticket from "../models/ticket";
+import {TicketRepositoryInterface} from "./ticketRepositoryInterface";
 
-export class TicketRepository {
+export class TicketRepository implements TicketRepositoryInterface {
 
     /**
      * create a new ticket
@@ -48,7 +49,7 @@ export class TicketRepository {
      * @param orderId
      * @return {object}
      */
-    async update(id: string, title: string, price: number,  orderId: string) {
+    async update(id: string, title: string, price: number, orderId: string) {
         await Ticket.findOneAndUpdate({_id: id}, {
             title,
             price,
