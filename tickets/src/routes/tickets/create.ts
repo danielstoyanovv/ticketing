@@ -8,6 +8,7 @@ import {MESSEGE_SUCCESS, STATUS_CREATED} from "../../constants/data";
 import {Redis} from "../../services/redis";
 import {TicketCreatedPublisher} from "../../events/publishers/ticket-created-publisher";
 import {natsWrapper} from "../../nats-wrapper";
+import {TicketRepository} from "../../repositories/ticketRepository";
 
 const redisClient = new Redis().createClient()
 
@@ -26,7 +27,7 @@ router.post("/api/tickets", [
     validateRequest,
 ], async (req: Request, res: Response) => {
     const {title, price} = req.body
-    const service = new TicketService()
+    const service = new TicketService(new TicketRepository())
     // create ticket
     const ticket = await service
         .setTitle(title)
